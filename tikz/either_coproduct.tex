@@ -1,0 +1,13 @@
+\usetikzlibrary{positioning}
+
+\begin{tikzpicture}[auto]
+  \node (Either) {Either e a};
+  \node (e) [left=of Either] {e};
+  \node (a) [right=of Either] {a};
+  \node (x) [above=of Either] {x};
+  \draw[->] (e) to node [swap] {\tiny{Left}} (Either);
+  \draw[->] (a) to node {\tiny{Right}} (Either);
+  \draw[->, dashed] (Either) to node [below] {\tiny{either recover use}} (x);
+  \draw[->] (e) to node {\tiny{recover}} (x);
+  \draw[->] (a) to node [swap]{\tiny{use}} (x);
+\end{tikzpicture}
