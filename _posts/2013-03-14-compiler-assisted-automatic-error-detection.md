@@ -2,7 +2,7 @@
 layout: post
 title: "Compiler Assisted Automatic Error Detection"
 description: ""
-category: Compilers
+category: Compilation
 tags: [compilers, c++, AspectC++, aspect oriented, error detection]
 ---
 {% include JB/setup %}
