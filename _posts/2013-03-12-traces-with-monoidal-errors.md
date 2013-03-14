@@ -35,7 +35,7 @@ can cause great headaches in compiler construction, reasoning about code,
 [maintainability](http://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html)
 and [cleanup](http://effbot.org/zone/python-with-statement.htm).
 
-Now a lot has been
+A lot has been
 [done](http://www.haskell.org/hoogle/?hoogle=error) in the
 Haskell world to study the [subject](http://www.haskell.org/haskellwiki/Error_vs._Exception).
 One of the most common approaches in [real world](http://book.realworldhaskell.org/read/error-handling.html)
@@ -53,11 +53,56 @@ foo = do
 ![Either Coproduct](/tikz/either_coproduct.png)
 
 which means
-```python
-x.show()
-```
-
-
-
-
-
+{% highlight haskell %}
+recover = either recover use . Left
+use = either reover use . Right
+{% endhighlight %}
+Where either is the unique function
+{% highlight haskell %}
+either f _ (Left x) = f x
+either _ g (Right y) = g y
+{% endhighlight %}
+and equality is up to Haskell's reduction and alpha renaming. If an initial 
+neutral element exists, coproducts can be turned into monoids. This element
+exists for the typeclass `Error` because of `noMsg : (Error e) => e`.
+{% highlight haskell %}
+instance (Error e) => Monoid (Either e a) where
+  mempty = Left noMsg
+  (Left _) `mappend` x = x
+  res@(Right _) `mappend` _ = res
+{% endhighlight %}
+Combined with the monadic properties, this can as well be expressed
+as a `MonadPlus` instance. It is well known, that this interface allows
+elegant backtracking
+{% highlight haskell %}
+backtrack :: (Error e) => [Either e a] -> Either e a
+backtrack = foldl1 mappend
+{% endhighlight %}
+`backtrack` returns the first computation that did not fail. However the amiable
+reader might have noticed that the second problem mentioned above is not
+solved:
+{% highlight haskell %}
+(Left err1) `mappend` (Left err2)
+{% endhighlight %}
+will drop `err1` and only return `err2`. Luckily there is an easy improvement
+on the `Monoid` (or `MonadPlus`) instance of `Either `. What is really missing
+is a way to combine multiple errors and preserve the monoid properties. The
+easiest way to obtain the missing piece is to add a monoid requirement on the
+error type argument:
+{% highlight haskell %}
+instance (Error e, Monoid e) => Monoid (Either e a) where
+  mempty = Left mempty
+  (Left e1) `mappend` (Left e2) = Left (e1 `mappend` e2)
+  (Left e1) `mappend` res@(Right _) = res
+  res@(Right _) `mappend` _ = res
+{% endhighlight %}
+Even though this approach is most simplistic, it just works :). Error types for
+which no combination is available can easily resort to the standard behavior:
+{% highlight haskell %}
+instance Monoid StandardError where
+  mempty = Left noMsg
+  err `mappend` _ = err
+{% endhighlight  %}
+A full blown instance declaration (including a monad transformer to stack
+the new error mechanism) can be found [here](https://github.com/JanBessai/Monoid-Error).
+Let me know, if you need anything else (more instances, an upload to hackage, ...).
