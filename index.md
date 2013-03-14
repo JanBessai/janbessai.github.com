@@ -8,7 +8,7 @@ tagline: false
 ## Welcome 
 
 ### About
-My name is Jan Bessai. I'm currently stuying computer science at
+My name is Jan Bessai. I'm currently studying computer science at
 [tu-dortmund](http://www.tu-dortmund.de). This blog will be about
 (functional) programming, types, category theory and some 
 philosophy maybe.
