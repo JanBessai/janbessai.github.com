@@ -13,7 +13,7 @@ Idris was accepted. The latest version can now compile Idris to Java.
 ### Quick start
 
 __This section is outdated, check out the 
-[update](/compilation/2013/05/07/forget-scala-a-java-backend-for-idris-update)
+[update](/Compilation/2013/05/07/forget-scala-a-java-backend-for-idris-update)
 for new instructions!__
 
 <del>
