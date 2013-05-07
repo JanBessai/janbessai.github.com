@@ -11,7 +11,7 @@ structure. One of the gains is proper error signaling. Let us look at
 common C code returning `NULL` to signal errors and setting a global
 error variable:
 {% highlight c %}
-void *foo(...) {
+void \*foo(...) {
   do_something();
   if (error) {
 	errno = 42;
