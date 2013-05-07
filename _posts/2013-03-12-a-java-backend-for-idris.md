@@ -12,6 +12,11 @@ Idris was accepted. The latest version can now compile Idris to Java.
 
 ### Quick start
 
+__This section is outdated, check out the 
+[update](compilation/2013/05/07/forget-scala-a-java-backend-for-idris-update)
+for new instructions!__
+
+<del>
 1. install the development version from git {% highlight sh %}
 $ git clone https://github.com/edwinb/Idris-dev
 $ cd Idris-dev
@@ -33,7 +38,7 @@ of .class files in your compilation directory.
 Make sure to take a look at the test suite, that comes with idris.
 It contains a lot of examples and is adapted to test the Java backend
 as well.
-
+</del>
 ### Behind the scenes
 
 Idris internally compiles to a small defunctionalized applicative
